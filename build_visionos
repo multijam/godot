@@ -1,0 +1,3 @@
+#!/bin/bash -xe
+
+scons p=ios target=template_debug dev_build=yes library_type=shared_library debug_symbols=yes arch=arm64 verbose=yes visionos_simulator=yes opengl3=no
