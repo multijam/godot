@@ -28,7 +28,9 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
+#if !defined(OPENGL_DISABLED)
 #import <OpenGLES/EAGLDrawable.h>
+#endif
 #import <QuartzCore/QuartzCore.h>
 
 @protocol DisplayLayer <NSObject>
@@ -53,7 +55,9 @@ API_AVAILABLE(ios(13.0))
 #endif
 @end
 
+#if !defined(OPENGL_DISABLED)
 API_DEPRECATED("OpenGLES is deprecated", ios(2.0, 12.0))
 @interface GodotOpenGLLayer : CAEAGLLayer <DisplayLayer>
 
 @end
+#endif

@@ -69,6 +69,7 @@
 
 @end
 
+#if !defined(OPENGL_DISABLED)
 @implementation GodotOpenGLLayer {
 	// The pixel dimensions of the backbuffer
 	GLint backingWidth;
@@ -189,3 +190,4 @@
 }
 
 @end
+#endif // !defined(OPENGL_DISABLED)

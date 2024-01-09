@@ -31,6 +31,8 @@ def get_opts():
         ("IOS_SDK_PATH", "Path to the iOS SDK", ""),
         BoolVariable("ios_simulator", "Build for iOS Simulator", False),
         ("ios_triple", "Triple for ios toolchain", ""),
+        BoolVariable("visionos_simulator", "Build for visionOS Simulator", False),
+        BoolVariable("visionos", "Build for visionOS", False),
     ]
 
 
@@ -106,6 +108,10 @@ def configure(env: "Environment"):
         env.Append(ASFLAGS=["-mios-simulator-version-min=12.0"])
         env.Append(CCFLAGS=["-mios-simulator-version-min=12.0"])
         env.Append(CPPDEFINES=["IOS_SIMULATOR"])
+        env.extra_suffix = ".simulator" + env.extra_suffix
+    elif env["visionos_simulator"]:
+        detect_darwin_sdk_path("ios", env)
+        env.Append(CPPDEFINES=["IOS_SIMULATOR", "VISIONOS_SIMULATOR", "VISIONOS", "OPENGL_DISABLED"])
         env.extra_suffix = ".simulator" + env.extra_suffix
     else:
         detect_darwin_sdk_path("ios", env)

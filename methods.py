@@ -597,6 +597,7 @@ def no_verbose(sys, env):
         colors["blue"], colors["bold_blue"], colors["blue"], colors["reset"]
     )
 
+    """
     env.Append(CXXCOMSTR=[compile_source_message])
     env.Append(CCCOMSTR=[compile_source_message])
     env.Append(SHCCCOMSTR=[compile_shared_source_message])
@@ -607,6 +608,7 @@ def no_verbose(sys, env):
     env.Append(LINKCOMSTR=[link_program_message])
     env.Append(JARCOMSTR=[java_library_message])
     env.Append(JAVACCOMSTR=[java_compile_source_message])
+    """
 
 
 def detect_visual_c_compiler_version(tools_env):
@@ -971,7 +973,12 @@ def detect_darwin_sdk_path(platform, env):
         sdk_name = "macosx"
         var_name = "MACOS_SDK_PATH"
     elif platform == "ios":
-        sdk_name = "iphoneos"
+        if env["visionos_simulator"]:
+            sdk_name = "xrsimulator1.0"
+        elif env["visionos"]:
+            raise Exception("TODO: implement me")
+        else:
+            sdk_name = "iphoneos"
         var_name = "IOS_SDK_PATH"
     elif platform == "iossimulator":
         sdk_name = "iphonesimulator"
