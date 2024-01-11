@@ -101,6 +101,14 @@ int ios_main(int argc, char **argv) {
 	argc = add_path(argc, fargv);
 	argc = add_cmdline(argc, fargv);
 
+    bool headless = false;
+    for (int i = 0; i < argc; ++i) {
+        if (strcmp(fargv[i], "--headless") == 0) {
+            headless = true;
+            break;
+        }
+    }
+
 	Error err = Main::setup(fargv[0], argc - 1, &fargv[1], false);
 
 	if (err == ERR_HELP) { // Returned by --help and --version, so success.
@@ -110,6 +118,18 @@ int ios_main(int argc, char **argv) {
 	}
 
 	os->initialize_modules();
+    
+    if (headless) {
+        Main::setup2();
+        os->start();
+
+		bool quit = false;
+        while (!quit) {
+            if (os->iterate()) {
+				quit = true;
+			}
+        }
+    }
 
 	return 0;
 }
