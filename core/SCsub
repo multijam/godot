@@ -171,7 +171,7 @@ if env["builtin_zstd"]:
         "decompress/zstd_decompress_block.c",
         "decompress/zstd_decompress.c",
     ]
-    if env["platform"] in ["android", "ios", "linuxbsd", "macos"] and not env["visionos_simulator"]:
+    if env["platform"] in ["android", "ios", "linuxbsd", "macos"] and not env.get("visionos_simulator"):
         # Match platforms with ZSTD_ASM_SUPPORTED in common/portability_macros.h
         #thirdparty_zstd_sources.append("decompress/huf_decompress_amd64.S")
         pass
