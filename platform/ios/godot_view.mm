@@ -439,7 +439,7 @@ static const float earth_gravity = 9.80665;
 
 	if (@available(iOS 13, *)) {
 		interfaceOrientation = [UIApplication sharedApplication].delegate.window.windowScene.interfaceOrientation;
-#if !defined(TARGET_OS_SIMULATOR) || !TARGET_OS_SIMULATOR
+#if (!defined(TARGET_OS_SIMULATOR) || !TARGET_OS_SIMULATOR) && !defined(VISIONOS)
 	} else {
 		interfaceOrientation = [[UIApplication sharedApplication] statusBarOrientation];
 #endif

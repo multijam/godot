@@ -62,6 +62,8 @@ LIBGODOT_API void libgodot_gdextension_bind(GDExtensionInitializationFunction in
 
 LIBGODOT_API int godot_main(int argc, char *argv[]);
 
+LIBGODOT_API int godot_runloop_step();
+
 #ifdef __cplusplus
 }
 #endif

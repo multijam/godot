@@ -30,7 +30,7 @@
 
 #include "api.h"
 
-#if defined(IOS_ENABLED) && !defined(VISIONOS_SIMULATOR)
+#if defined(IOS_ENABLED) && !defined(VISIONOS_SIMULATOR) && !defined(VISIONOS)
 
 void register_ios_api() {
 	godot_ios_plugins_initialize();

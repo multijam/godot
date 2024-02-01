@@ -976,7 +976,7 @@ def detect_darwin_sdk_path(platform, env):
         if env["visionos_simulator"]:
             sdk_name = "xrsimulator1.0"
         elif env["visionos"]:
-            raise Exception("TODO: implement me")
+            sdk_name = "xros"
         else:
             sdk_name = "iphoneos"
         var_name = "IOS_SDK_PATH"

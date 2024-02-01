@@ -1,3 +1,30 @@
-#!/bin/bash -xe
+#!/bin/bash -ex
 
-scons p=ios target=template_debug dev_build=yes library_type=shared_library debug_symbols=yes arch=arm64 verbose=yes visionos_simulator=yes opengl3=no vulkan=no IOS_TOOLCHAIN_PATH=/Applications/Xcode-beta.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain $@
+MODULE_OPTS="disable_advanced_gui=yes module_openxr_enabled=no module_text_server_adv_enabled=no module_text_server_fb_enabled=yes module_jsonrpc_enabled=no module_mbedtls_enabled=no module_mobile_vr_enabled=no module_regex_enabled=no module_svg_enabled=no module_tga_enabled=no module_webrtc_enabled=no module_websocket_enabled=no"
+
+MODE=$1
+shift;
+
+PLATFORM=$1
+shift;
+
+if [ "$PLATFORM" == "visionos" ]; then
+	PLATFORM_OPTS="visionos=yes"
+elif [ "$PLATFORM" == "visionos_simulator" ]; then
+	PLATFORM_OPTS="visionos_simulator=yes"
+else
+	echo Must specify 'visionos' or 'visionos_simulator' as the platform > /dev/stderr
+	exit 1
+fi
+
+BUILD="scons p=ios library_type=shared_library $MODULE_OPTS arch=arm64 verbose=yes $PLATFORM_OPTS opengl3=no vulkan=no $@"
+
+if [ "$MODE" == "debug" ]; then
+	$BUILD target=template_debug dev_build=yes debug_symbols=yes
+elif [ "$MODE" == "release" ]; then
+	$BUILD p=ios target=template_release debug_symbols=no
+else
+	echo Must specify \'debug\' or \'release\' > /dev/stderr
+	exit 1
+fi
+

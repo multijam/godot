@@ -102,12 +102,15 @@ int ios_main(int argc, char **argv) {
 	argc = add_cmdline(argc, fargv);
 
     bool headless = false;
+	bool runLoopHandledByHost = false;
     for (int i = 0; i < argc; ++i) {
         if (strcmp(fargv[i], "--headless") == 0) {
             headless = true;
-            break;
-        }
+        } else if (strcmp(fargv[i], "--runLoopHandledByHost") == 0) {
+			runLoopHandledByHost = true;
+		}
     }
+
 
 	Error err = Main::setup(fargv[0], argc - 1, &fargv[1], false);
 
@@ -118,17 +121,21 @@ int ios_main(int argc, char **argv) {
 	}
 
 	os->initialize_modules();
-    
+
     if (headless) {
         Main::setup2();
         os->start();
 
-		bool quit = false;
-        while (!quit) {
-            if (os->iterate()) {
-				quit = true;
+		if (runLoopHandledByHost) {
+			// do nothing. the caller is responsible for calling godot_runloop_step.
+		} else {
+			bool quit = false;
+			while (!quit) {
+				if (os->iterate()) {
+					quit = true;
+				}
 			}
-        }
+		}
     }
 
 	return 0;
@@ -137,11 +144,19 @@ int ios_main(int argc, char **argv) {
 void ios_finish() {
 	Main::cleanup();
 	delete os;
+	os = nullptr;
 }
 
 #if defined(LIBRARY_ENABLED)
 #include "core/libgodot/libgodot.h"
 extern "C" LIBGODOT_API int godot_main(int argc, char *argv[]) {
 	return ios_main(argc, argv);
+}
+extern "C" LIBGODOT_API int godot_runloop_step() {
+	if (os == nullptr) {
+		return 1;
+	}
+
+	return os->iterate();
 }
 #endif

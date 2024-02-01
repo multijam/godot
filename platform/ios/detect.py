@@ -112,7 +112,11 @@ def configure(env: "Environment"):
     elif env["visionos_simulator"]:
         detect_darwin_sdk_path("ios", env)
         env.Append(CPPDEFINES=["IOS_SIMULATOR", "VISIONOS_SIMULATOR", "VISIONOS", "OPENGL_DISABLED"])
-        env.extra_suffix = ".simulator" + env.extra_suffix
+        env.extra_suffix = ".visionos.simulator" + env.extra_suffix
+    elif env["visionos"]:
+        detect_darwin_sdk_path("ios", env)
+        env.Append(CPPDEFINES=["VISIONOS", "OPENGL_DISABLED"])
+        env.extra_suffix = ".visionos" + env.extra_suffix
     else:
         detect_darwin_sdk_path("ios", env)
         env.Append(ASFLAGS=["-miphoneos-version-min=12.0"])
