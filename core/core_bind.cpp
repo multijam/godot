@@ -193,6 +193,11 @@ void ResourceSaver::_bind_methods() {
 
 ////// OS //////
 
+void OS::sync_remote_filesystem() {
+	auto err = ::OS::get_singleton()->sync_remote_filesystem();
+	(void)err; // TODO
+}
+
 PackedStringArray OS::get_connected_midi_inputs() {
 	return ::OS::get_singleton()->get_connected_midi_inputs();
 }
@@ -560,6 +565,7 @@ String OS::get_unique_id() const {
 OS *OS::singleton = nullptr;
 
 void OS::_bind_methods() {
+	ClassDB::bind_method(D_METHOD("sync_remote_filesystem"), &OS::sync_remote_filesystem);
 	ClassDB::bind_method(D_METHOD("get_connected_midi_inputs"), &OS::get_connected_midi_inputs);
 	ClassDB::bind_method(D_METHOD("open_midi_inputs"), &OS::open_midi_inputs);
 	ClassDB::bind_method(D_METHOD("close_midi_inputs"), &OS::close_midi_inputs);

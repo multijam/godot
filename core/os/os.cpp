@@ -596,8 +596,29 @@ void OS::add_frame_delay(bool p_can_draw) {
 	}
 }
 
+static String rfs_server_host = "";
+static int rfs_port = 0;
+static String rfs_password = "";
+static String rfs_project_path = "";
+
 Error OS::setup_remote_filesystem(const String &p_server_host, int p_port, const String &p_password, String &r_project_path) {
-	return default_rfs.synchronize_with_server(p_server_host, p_port, p_password, r_project_path);
+	rfs_server_host = p_server_host;
+	rfs_port = p_port;
+	rfs_password = p_password;
+
+	auto error = default_rfs.synchronize_with_server(p_server_host, p_port, p_password, r_project_path);
+
+	rfs_project_path = r_project_path;
+
+	return error;
+}
+
+Error OS::sync_remote_filesystem() {
+	if (rfs_server_host.size() == 0) {
+		return Error();
+	}
+
+	return default_rfs.synchronize_with_server(rfs_server_host, rfs_port, rfs_password, rfs_project_path);
 }
 
 OS::PreferredTextureFormat OS::get_preferred_texture_format() const {

@@ -131,6 +131,7 @@ public:
 		RENDERING_DRIVER_OPENGL3,
 	};
 
+	virtual void sync_remote_filesystem();
 	virtual PackedStringArray get_connected_midi_inputs();
 	virtual void open_midi_inputs();
 	virtual void close_midi_inputs();
